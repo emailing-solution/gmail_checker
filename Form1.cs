@@ -17,7 +17,7 @@ namespace gmail_checker
                 var domains = domainsText.Text.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
                 if (domains.Length == 0)
                 {
-                    MessageBox.Show("Please enter at least one domain");
+                    MessageBox.Show("Please enter at least one domain", "error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
@@ -36,11 +36,11 @@ namespace gmail_checker
                     }
                 }
 
-                MessageBox.Show("Check completed");
+                MessageBox.Show("Check completed", "done", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"An error occurred: {ex.Message}");
+                MessageBox.Show($"An error occurred: {ex.Message}", "error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {

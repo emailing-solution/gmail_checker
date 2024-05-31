@@ -1,15 +1,28 @@
 ﻿using DnsClient;
+using System.Text.RegularExpressions;
 
 namespace gmail_checker
 {
     internal class Mx
     {
+        private string Line { get; set; }
         private string Domain { get; set; }
         private LookupClient Lookup { get; set; }
-        public Mx(string domain)
+
+        const string Pattern = @"(?<=@)[\w\.-]+";
+        public Mx(string line)
         {
-            Domain = domain;
+            Line = line;
             Lookup = new LookupClient();
+            var matches = Regex.Matches(Line, Pattern);
+            if (matches.Count > 0)
+            {
+                Domain = matches[0].Value;
+            }
+            else
+            {
+                Domain = Line;
+            }
         }
 
         //check domain mx
@@ -31,7 +44,7 @@ namespace gmail_checker
             var mxs = await CheckMxAsync();
             var isGmailMx = mxs.Any(x => x.Contains("google.com"));
 
-            return new[] { Domain, isGmailMx ? "t" : "f" }; 
+            return new[] { Line, isGmailMx ? "t" : "f" };
         }
     }
 }
